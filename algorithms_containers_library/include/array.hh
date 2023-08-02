@@ -8,6 +8,12 @@ class array{
         std::uint32_t contains;
         T* head;
         public:
+            array(){
+                this->contains=0;
+                this->size=len;
+                this->head=static_cast<T*>(malloc(len*sizeof(T)));
+                ithis->head==nullptr;
+            }
             array(std::uint32_t len){
                 this->contains=0;
                 this->size=len;
