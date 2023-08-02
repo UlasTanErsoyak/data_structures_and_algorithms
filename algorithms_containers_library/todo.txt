@@ -1,0 +1,49 @@
+Data Structures:
+
+✅ Array
+Linked List
+String
+Stack
+Hash Table
+Binary Search Tree (BST)
+Circular Buffer (Queue)
+Priority Queue
+Heap
+Trie (Trie-based AutoComplete)
+Graph (BFS and DFS)
+AVL Tree (Balanced Binary Search Tree)
+B-Tree (Self-Balancing Search Tree)
+Linked List with Iterator
+Doubly Ended Queue (Deque)
+Disjoint Set (Union-Find)
+Sorting Algorithms:
+
+Bubble Sort
+Selection Sort
+Insertion Sort
+Merge Sort
+Quick Sort
+Radix Sort
+Topological Sorting
+Counting Sort
+Bucket Sort
+Shell Sort
+String Algorithms:
+
+Boyer-Moore String Search
+Rabin-Karp String Search
+Knuth-Morris-Pratt (KMP) String Search Algorithm
+String Operations
+Graph Algorithms:
+
+Dijkstra's Algorithm
+A* Algorithm
+Floyd-Warshall Algorithm (All-Pairs Shortest Path)
+Bellman-Ford Algorithm (Single-Source Shortest Path with Negative Weights)
+Minimum Spanning Tree (MST) using Prim's Algorithm
+Kruskal's Algorithm
+Miscellaneous Algorithms:
+
+Suffix Array (Useful for Pattern Matching)
+Longest Common Subsequence (LCS) Algorithm
+Floyd's Cycle Detection Algorithm (Cycle Detection in Linked List)
