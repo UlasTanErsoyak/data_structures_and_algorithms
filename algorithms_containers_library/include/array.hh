@@ -19,7 +19,7 @@ class array{
             array(array<T>& other){
                 T* new_head = static_cast<T*>(malloc(other.size*sizeof(T)));
                 for(auto i=0;i<other.contains;i++){
-                    new_head[i]=other[i];
+                    *(new_head+i)=*(other+i);
                 }
                 this->head=new_head;
                 this->contains=other.contains;
@@ -29,7 +29,7 @@ class array{
                 free(this->head);
             }
             T& operator[](const std::uint32_t idx){
-                if(idx>this->size){
+                if(idx>=this->size){
                     throw std::runtime_error("index out of bounds.");
                 }
                 return *(this->head+idx);
@@ -40,7 +40,7 @@ class array{
                 }
                 T* new_head = static_cast<T*>(malloc(other.size*sizeof(T)));
                 for(auto i=0;i<other.contains;i++){
-                    new_head[i]=other.head[i];
+                    *(new_head+i)=*(other.head+i);
                 }
                 delete[] this->head;
                 this->head=new_head;
@@ -53,7 +53,7 @@ class array{
                     return false;
                 }
                 for(auto i=0;i<other.size;i++){
-                    if(this->head[i]!=other.head[i]){
+                    if(*(this->head+i)!=*(other.head+i)){
                         return false;
                     }
                 }
@@ -89,13 +89,13 @@ class array{
                     throw std::runtime_error("cant pop from an empty array");
                 }
                 contains-=1;
-                return *(this->head[contains]);
+                return *(this->head+contains);
             }
             void insert(const T data, const std::uint32_t idx){
                 if(idx>this->size){
                     throw std::runtime_error("cant append to an index that is bigger than array size");
                 }
-                if(idx!=this->contains+1){
+                if(idx!=this->contains){
                     *(this->head+contains+1)=data;
                     contains+=1;
                 }else{
@@ -115,7 +115,7 @@ class array{
                         throw std::runtime_error("memory allocation failed");
                     }
                     for (auto i=0;i<this->contains;++i) {
-                        new_head[i]=this->head[i];
+                        *(new_head+i)=*(this->head+i);
                     }
                     free(this->head);
                     this->head=new_head;
@@ -131,7 +131,7 @@ class array{
                         throw std::runtime_error("memory allocation failed");
                 }
                 for (auto i =0;i<this->contains;++i) {
-                        new_head[i]=this->head[i];
+                        *(new_head+i)=*(this->head+i);
                 }
                 free(this->head);
                 this->head=new_head;
