@@ -10,9 +10,8 @@ class array{
         public:
             array(){
                 this->contains=0;
-                this->size=len;
-                this->head=static_cast<T*>(malloc(len*sizeof(T)));
-                ithis->head==nullptr;
+                this->size=0;
+                this->head==nullptr;
             }
             array(std::uint32_t len){
                 this->contains=0;
@@ -97,7 +96,7 @@ class array{
                 contains-=1;
                 return *(this->head+contains);
             }
-            void insert(const T data, const std::uint32_t idx){
+            void change(const T data, const std::uint32_t idx){
                 if(idx>this->size){
                     throw std::runtime_error("cant append to an index that is bigger than array size");
                 }
