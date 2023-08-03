@@ -24,7 +24,7 @@ class array{
             array(array<T>& other){
                 T* new_head = static_cast<T*>(malloc(other.size*sizeof(T)));
                 for(auto i=0;i<other.contains;i++){
-                    *(new_head+i)=*(other+i);
+                    *(new_head+i)=other[i];
                 }
                 this->head=new_head;
                 this->contains=other.contains;
@@ -87,13 +87,21 @@ class array{
                     throw std::runtime_error("overflow");
                 }
                 *(this->head+contains) = data;
-                contains+=1;
+                contains++;
+            }
+            void concat(const array<T>& other){
+                std::uint32_t new_size=this->contains+other.contains;
+                this->reserve_space(new_size);
+                for (std::uint32_t i=0;i<other.contains;++i) {
+                    *(this->head+this->contains+i) =*(other.head+i);
+                }
+                this->contains=new_size;
             }
             T pop_back(){
                 if(contains==0){
                     throw std::runtime_error("cant pop from an empty array");
                 }
-                contains-=1;
+                contains--;
                 return *(this->head+contains);
             }
             void change(T data, std::uint32_t idx){
@@ -102,7 +110,7 @@ class array{
                 }
                 if(idx!=this->contains){
                     *(this->head+contains+1)=data;
-                    contains+=1;
+                    contains++;
                 }else{
                     *(this->head+idx)=data;
                 }

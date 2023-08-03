@@ -14,7 +14,6 @@ class linked_list{
         node* head;
         node* tail;
         std::uint32_t size;
-
     public:
         linked_list(){
             this->head=nullptr;
@@ -64,7 +63,7 @@ class linked_list{
             }
             if(this->is_circular&&idx==this->size){
             }
-            this->size+=1;
+            this->size++;
         }
         void push_head(const T data){
             node* new_head=static_cast<node*>(malloc(sizeof(node)));
@@ -72,7 +71,7 @@ class linked_list{
             new_head->prev=nullptr;
             new_head->next=this->head;
             this->head=new_head;
-            this->size+=1;
+            this->size++;
             if(this->size==1){
                 this->tail=this->head;
             }
@@ -179,7 +178,7 @@ class linked_list{
                     this->head->next->prev=nullptr;
                 }
             }
-            this->size-=1;
+            this->size--;
             node* prev_head=this->head;
             this->head=this->head->next;
             free(prev_head);

@@ -4,7 +4,8 @@ set(CMAKE_CXX_STANDARD 20)
 include_directories(include)
 
 set(HEADERS
-    include/linked_list.hh
+    include/array.hh
+    include/string.hh
     
 )
 
