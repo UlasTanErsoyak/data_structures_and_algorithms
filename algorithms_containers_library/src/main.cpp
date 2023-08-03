@@ -1,10 +1,14 @@
 #include <iostream>
-#include "array.hh"
+#include "linked_list.hh"
 int main() {
-    array<int> x(3);
-    x.push_back(5);
-    x.push_back(4);
-    x.push_back(3);
-    x.insert(3,3);
+    linked_list<int> x;
+    x.push_head(6);
+    x.push_head(7);
+    x.push_head(8);
+    x.push_head(9);
+    auto a = x.pop_head();
+    auto b = x.pop_head();
+    auto c = x.pop_head();
+    auto d = x.pop_head();
     return 0;
 }

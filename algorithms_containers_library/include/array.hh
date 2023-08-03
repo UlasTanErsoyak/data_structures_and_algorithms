@@ -96,9 +96,12 @@ class array{
                 contains-=1;
                 return *(this->head+contains);
             }
+            void insert(const T data, const std::uint32_t idx){
+                //! todo
+            }
             void change(const T data, const std::uint32_t idx){
                 if(idx>this->size){
-                    throw std::runtime_error("cant append to an index that is bigger than array size");
+                    throw std::runtime_error("cant change to an index that is doesnt exist");
                 }
                 if(idx!=this->contains){
                     *(this->head+contains+1)=data;
