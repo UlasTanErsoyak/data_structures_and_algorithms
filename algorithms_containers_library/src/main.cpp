@@ -7,5 +7,8 @@ int main() {
     x.push_head(8);
     x.push_head(9);
     x.make_circular();
+    x.make_doubly();
+    x.insert(0,2);
+    x.reverse();
     return 0;
 }
