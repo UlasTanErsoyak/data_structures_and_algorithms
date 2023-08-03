@@ -6,9 +6,6 @@ int main() {
     x.push_head(7);
     x.push_head(8);
     x.push_head(9);
-    auto a = x.pop_head();
-    auto b = x.pop_head();
-    auto c = x.pop_head();
-    auto d = x.pop_head();
+    x.make_circular();
     return 0;
 }
