@@ -50,6 +50,15 @@ class string{
         void change(char data,std::uint32_t idx){
             this->chars.change(data,idx);
         }
+        string substring(std::uint32_t start_idx,std::uint32_t length) {
+            string result;
+            result.chars.reserve_space(length+1);
+            for (auto i=0;i<length;i++) {
+                result.chars.push_back(this->chars[start_idx + i]);
+            }
+            result.chars.push_back('\0');
+            return result;
+        }
         std::uint32_t get_size(){
             return this->chars.get_size();
         }

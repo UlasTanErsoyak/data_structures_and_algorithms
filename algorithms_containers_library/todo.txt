@@ -2,7 +2,7 @@ Data Structures:
 
 ✅ Array
 ✅ Linked List
-String
+✅ String
 Stack
 Hash Table
 Binary Search Tree (BST)
