@@ -54,7 +54,7 @@ class string{
             string result;
             result.chars.reserve_space(length+1);
             for (auto i=0;i<length;i++) {
-                result.chars.push_back(this->chars[start_idx + i]);
+                result.chars.push_back(this->chars[start_idx+i]);
             }
             result.chars.push_back('\0');
             return result;
