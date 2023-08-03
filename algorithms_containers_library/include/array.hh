@@ -33,13 +33,13 @@ class array{
             ~array(){
                 free(this->head);
             }
-            T& operator[](const std::uint32_t idx){
+            T& operator[](std::uint32_t idx){
                 if(idx>=this->size){
                     throw std::runtime_error("index out of bounds.");
                 }
                 return *(this->head+idx);
             }
-            array<T>& operator=(const array<T>& other){
+            array<T>& operator=(array<T>& other){
                 if(this==&other){
                     return *this;
                 }
@@ -82,7 +82,7 @@ class array{
             T* end(){
                 return *(head+contains);
             }
-            void push_back(const T data){
+            void push_back(T data){
                 if(contains==size){
                     throw std::runtime_error("overflow");
                 }
@@ -96,7 +96,7 @@ class array{
                 contains-=1;
                 return *(this->head+contains);
             }
-            void change(const T data, const std::uint32_t idx){
+            void change(T data, std::uint32_t idx){
                 if(idx>this->size){
                     throw std::runtime_error("cant change to an index that is doesnt exist");
                 }

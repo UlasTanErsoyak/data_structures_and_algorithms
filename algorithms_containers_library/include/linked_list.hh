@@ -24,9 +24,49 @@ class linked_list{
             this->is_circular=false;
         }
         ~linked_list(){
-            //TODO
+            node* current=this->head;
+            while (current!=nullptr) {
+                node* next=current->next;
+                free(current);
+                current=next;
+            }
         }
-        void push_head(T data){
+        T& operator[](std::uint32_t idx){
+            if(idx>=this->size){
+                throw std::runtime_error("index out of range");
+            }
+            node* current=this->head;
+            for(int i=0;i<idx;i++){
+                current=current->next;
+            }
+            return current->data;
+        }
+        void insert(T data,std::uint32_t idx){
+            if(idx==0){
+                this->push_head(data);
+                return;
+            }
+            node* new_node=static_cast<node*>(malloc(sizeof(node)));
+            new_node->data=data;
+            new_node->prev=nullptr;
+            node* current=this->head;
+            if(idx>=this->size){
+                this->tail=new_node;
+                idx=this->size;
+            }
+            for(auto i=1;i<=idx-1;++i){
+                current=current->next;
+            }
+            new_node->next=current->next;
+            current->next=new_node;
+            if(this->is_doubly){
+                new_node->prev=current;
+            }
+            if(this->is_circular&&idx==this->size){
+            }
+            this->size+=1;
+        }
+        void push_head(const T data){
             node* new_head=static_cast<node*>(malloc(sizeof(node)));
             new_head->data=data;
             new_head->prev=nullptr;
@@ -52,15 +92,79 @@ class linked_list{
             }
         }
         void make_linear(){
-            if(this->is_doubly){
-                node* current=this->head;
-                while(current!=this->tail){
-                    this->next->prev=nullptr;
-                    current=current->next;
+            if(this->is_circular){
+                this->tail->next=nullptr;
+                if(this->is_doubly){
+                    this->head->prev=nullptr;
                 }
+            this->is_circular=false;
             }
         }
-        T pop_head(){
+        void make_circular(){
+            if(!this->is_circular){
+                this->tail->next=this->head;
+                if(this->is_doubly){
+                        this->head->prev=this->tail;
+                }
+            this->is_circular=true;
+            }
+        }
+        void make_singly(){
+            if(this->is_doubly){
+                node* current = this->head;
+                while(current!=this->tail){
+                    current->next->prev=nullptr;
+                    current=current->next;
+                }
+                if(this->is_circular){
+                    this->head->prev=nullptr;
+                }
+                this->is_doubly=false;
+            }
+        }
+        void make_doubly(){
+            if(!this->is_doubly){
+                node* current = this->head;
+                while(current!=this->tail){
+                    current->next->prev=current;
+                    current=current->next;
+                }
+                if(this->is_circular){
+                    this->head->prev=this->tail;
+                }
+                this->is_doubly=true;
+            }
+        }
+        void reverse() {
+            if (this->is_circular){
+                node* prev=nullptr;
+                node* current=this->head;
+                node* next_node;
+                do {
+                    next_node=current->next;
+                    current->next=prev;
+                    prev=current;
+                    current=next_node;
+                } while (current!=this->head);
+                this->head->next=prev;
+            }else{
+                node* prev=nullptr;
+                node* current=this->head;
+                node* next_node;
+                while (current!=nullptr){
+                    next_node=current->next;
+                    current->next=prev;
+                    if (this->is_doubly){
+                        current->prev=next_node;
+                    }
+                    prev=current;
+                    current=next_node;
+                }
+            }
+            this->tail=this->head;
+            this->head=prev;
+        }
+        T& pop_head(){
             if(this->size==0){
                 throw std::runtime_error("cant pop an empty linked list");
             }
@@ -90,5 +194,4 @@ class linked_list{
         bool is_empty(){
             return this->size==0;
         }
-
 };
