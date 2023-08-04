@@ -6,6 +6,7 @@ include_directories(include)
 set(HEADERS
     include/array.hh
     include/string.hh
+    include/hash_table.hh
     
 )
 

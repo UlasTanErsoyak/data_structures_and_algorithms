@@ -135,8 +135,8 @@ class linked_list{
             }
         }
         void reverse() {
+            node* prev=nullptr;
             if (this->is_circular){
-                node* prev=nullptr;
                 node* current=this->head;
                 node* next_node;
                 do {
@@ -183,6 +183,9 @@ class linked_list{
             this->head=this->head->next;
             free(prev_head);
             return rs;
+        }
+        T& peek_head(){
+            return this->head->data;
         }
         std::uint32_t get_size(){
             return this->size;
