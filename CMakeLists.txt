@@ -4,6 +4,7 @@ include_directories(include)
 
 set(HEADERS
     src/include/token.hpp
+    src/include/lexer.hpp
 )
 
 set(SOURCES
