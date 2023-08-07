@@ -1,31 +1,21 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 #include "include\lexer.hpp"
-void print(token x){
-    std::cout<<x.token_type_to_string(x.get_type())<<' ';
-}
 int main(void){
-    std::string x = "a -> float = \"asds\";";
-    lexer* a = new lexer(x);
-    auto q = a->next_token();
-    print(q);
-    auto b = a->next_token();
-    print(b);
-
-    auto c = a->next_token();
-    print(c);
-
-    auto d = a->next_token();
-    print(d);
-
-    auto w = a->next_token();
-    print(w);
-
-    auto p = a->next_token();
-    print(p);
-
-    auto v = a->next_token();
-    print(v);
-
+    std::ifstream f("../syntax_example.zz");
+    std::string str;
+    if(f){
+       std::ostringstream ss;
+       ss << f.rdbuf();
+       str = ss.str();
+    }
+    lexer* a=new lexer(str);
+    for(int i =0;i<27;i++){
+        auto q=a->next_token();
+        std::cout<<q.token_to_str()<<std::endl;
+    }
 
     return 0;
 }

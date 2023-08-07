@@ -67,6 +67,26 @@ token lexer::next_token(){
             return token("Unterminated string literal",token_type::token_err);
         }
     }
+    else if(this->src[this->pos]=='-'&&this->peek(1)=='>'){
+        advance(2);
+        return token("->",token_type::token_arrow);
+    }
+    else if(this->src[this->pos]=='+'){
+        advance();
+        return token("+",token_type::token_accumulate);
+    }
+    else if(this->src[this->pos]=='-'){
+        advance();
+        return token("-",token_type::token_substract);
+    }
+    else if(this->src[this->pos]=='/'){
+        advance();
+        return token("/",token_type::token_divide);
+    }
+    else if(this->src[this->pos]=='*'){
+        advance();
+        return token("*",token_type::token_multiply);
+    }
     else if(this->src[this->pos]==';'){
         advance();
         return token(";",token_type::token_semi);
@@ -74,10 +94,6 @@ token lexer::next_token(){
     else if(this->src[this->pos]=='='){
         advance();
         return token("=",token_type::token_assign);
-    }
-    else if(this->src[this->pos]=='-'&&this->peek(1)=='>'){
-        advance(2);
-        return token("->",token_type::token_arrow);
     }
     else if(this->src[this->pos]=='('){
         advance();
