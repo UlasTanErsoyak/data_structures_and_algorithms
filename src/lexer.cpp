@@ -25,7 +25,10 @@ token lexer::next_token(){
                 rs += this->src[this->pos];
                 this->advance();
             }
-            if(rs=="int"){
+            if(rs=="if"){
+                return token(rs,token_type::token_if);
+            }
+            else if(rs=="int"){
                 return token(rs,token_type::token_int);
             }
             else if(rs=="char"){
@@ -37,6 +40,15 @@ token lexer::next_token(){
             else if(rs=="float"){
                 return token(rs,token_type::token_float);
             } 
+            else if(rs=="while"){
+                return token(rs,token_type::token_while);
+            }
+            else if(rs=="for"){
+                return token(rs,token_type::token_for);
+            }
+            else if(rs=="bundle"){
+                return token(rs,token_type::token_bundle);
+            }
             else{
                 return token(rs,token_type::token_iden);
             }
@@ -110,6 +122,35 @@ token lexer::next_token(){
     else if(this->src[this->pos]=='}'){
         advance();
         return token("}",token_type::token_lbrace);
+    }
+    else if(this->src[this->pos]=='['){
+        advance();
+        return token("[",token_type::token_lbrack);
+    }
+    else if(this->src[this->pos]==']'){
+        advance();
+        return token("]",token_type::token_rbrack);
+    }
+    else if(this->src[this->pos]=='>'){
+        advance();
+        return token(">",token_type::token_greater);
+    }
+    else if(this->src[this->pos]=='<'){
+        advance();
+        return token("<",token_type::token_less);
+    }
+    else if(this->src[this->pos]==','){
+        advance();
+        return token(",",token_type::token_comma);
+    }
+    else if(this->src[this->pos]=='#'){
+        std::string rs;
+        while(this->src[this->pos]!='\n'){
+            rs+=this->src[this->pos];
+            advance();
+        }
+        advance();
+        return token(rs,token_type::token_comment);
     }
     return token("unexpected char", token_type::token_err);
 }

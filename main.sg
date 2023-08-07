@@ -1,0 +1,9 @@
+a[5]->int = [1,2,3,4,5];
+bundle{
+    a->int;
+    b->char;
+};
+#comment test
+for(i->int=0;i<5;i=i+1){
+    a[i]=a[i]*3;
+}

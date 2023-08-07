@@ -1,6 +1,0 @@
-main->int(){
-    a->int=5;
-    b->float=3.21;
-    c->str="im a string";
-    d->int = ((a/2) * (b+2)) -1;
-}
