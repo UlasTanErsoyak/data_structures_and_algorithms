@@ -1,0 +1,160 @@
+# Array manipulation
+arr = [1, 2, 3, 4, 5]
+length = size(arr)
+element = arr[2]
+
+# Loop to calculate sum
+sum = 0
+for (i = 0; i < size(arr); i = i + 1) {
+    sum = sum + arr[i]
+}
+
+# Function to calculate power
+function power(base->int, exponent->int): int {
+    result = 1
+    for (i = 0; i < exponent; i = i + 1) {
+        result = result * base
+    }
+    return result
+}
+
+# Main program
+main {
+    print("Array element:", element)
+    print("Sum:", sum)
+    print("2^5:", power(2, 5))
+}
+
+! LEXER OUTPUT !
+
+type: token_comment int_type: 34 value: # Array manipulation
+type: token_iden int_type: 0 value: arr
+type: token_assign int_type: 12 value: =
+type: token_lbrack int_type: 32 value: [
+type: token_int_literal int_type: 8 value: 1
+type: token_comma int_type: 27 value: ,
+type: token_int_literal int_type: 8 value: 2
+type: token_comma int_type: 27 value: ,
+type: token_int_literal int_type: 8 value: 3
+type: token_comma int_type: 27 value: ,
+type: token_int_literal int_type: 8 value: 4
+type: token_comma int_type: 27 value: ,
+type: token_int_literal int_type: 8 value: 5
+type: token_rbrack int_type: 33 value: ]
+type: token_iden int_type: 0 value: length
+type: token_assign int_type: 12 value: =
+type: token_iden int_type: 0 value: size
+type: token_rparen int_type: 29 value: (
+type: token_iden int_type: 0 value: arr
+type: token_lparen int_type: 28 value: )
+type: token_iden int_type: 0 value: element
+type: token_assign int_type: 12 value: =
+type: token_iden int_type: 0 value: arr
+type: token_lbrack int_type: 32 value: [
+type: token_int_literal int_type: 8 value: 2
+type: token_rbrack int_type: 33 value: ]
+type: token_comment int_type: 34 value: # Loop to calculate sum
+type: token_iden int_type: 0 value: sum
+type: token_assign int_type: 12 value: =
+type: token_int_literal int_type: 8 value: 0
+type: token_for int_type: 15 value: for
+type: token_rparen int_type: 29 value: (
+type: token_iden int_type: 0 value: i
+type: token_assign int_type: 12 value: =
+type: token_int_literal int_type: 8 value: 0
+type: token_semi int_type: 25 value: ;
+type: token_iden int_type: 0 value: i
+type: token_less int_type: 23 value: ->
+type: token_iden int_type: 0 value: size
+type: token_rparen int_type: 29 value: (
+type: token_iden int_type: 0 value: arr
+type: token_lparen int_type: 28 value: )
+type: token_semi int_type: 25 value: ;
+type: token_iden int_type: 0 value: i
+type: token_assign int_type: 12 value: =
+type: token_iden int_type: 0 value: i
+type: token_accumulate int_type: 18 value: +
+type: token_int_literal int_type: 8 value: 1
+type: token_lparen int_type: 28 value: )
+type: token_rbrace int_type: 31 value: {
+type: token_iden int_type: 0 value: sum
+type: token_assign int_type: 12 value: =
+type: token_iden int_type: 0 value: sum
+type: token_accumulate int_type: 18 value: +
+type: token_iden int_type: 0 value: arr
+type: token_lbrack int_type: 32 value: [
+type: token_iden int_type: 0 value: i
+type: token_rbrack int_type: 33 value: ]
+type: token_lbrace int_type: 30 value: }
+type: token_comment int_type: 34 value: # Function to calculate power
+type: token_iden int_type: 0 value: function
+type: token_iden int_type: 0 value: power
+type: token_rparen int_type: 29 value: (
+type: token_iden int_type: 0 value: base
+type: token_arrow int_type: 1 value: ->
+type: token_int int_type: 3 value: int
+type: token_comma int_type: 27 value: ,
+type: token_iden int_type: 0 value: exponent
+type: token_arrow int_type: 1 value: ->
+type: token_int int_type: 3 value: int
+type: token_lparen int_type: 28 value: )
+type: token_colon int_type: 26 value: :
+type: token_int int_type: 3 value: int
+type: token_rbrace int_type: 31 value: {
+type: token_iden int_type: 0 value: result
+type: token_assign int_type: 12 value: =
+type: token_int_literal int_type: 8 value: 1
+type: token_for int_type: 15 value: for
+type: token_rparen int_type: 29 value: (
+type: token_iden int_type: 0 value: i
+type: token_assign int_type: 12 value: =
+type: token_int_literal int_type: 8 value: 0
+type: token_semi int_type: 25 value: ;
+type: token_iden int_type: 0 value: i
+type: token_less int_type: 23 value: ->
+type: token_iden int_type: 0 value: exponent
+type: token_semi int_type: 25 value: ;
+type: token_iden int_type: 0 value: i
+type: token_assign int_type: 12 value: =
+type: token_iden int_type: 0 value: i
+type: token_accumulate int_type: 18 value: +
+type: token_int_literal int_type: 8 value: 1
+type: token_lparen int_type: 28 value: )
+type: token_rbrace int_type: 31 value: {
+type: token_iden int_type: 0 value: result
+type: token_assign int_type: 12 value: =
+type: token_iden int_type: 0 value: result
+type: token_multiply int_type: 16 value: *
+type: token_iden int_type: 0 value: base
+type: token_lbrace int_type: 30 value: }
+type: token_iden int_type: 0 value: return
+type: token_iden int_type: 0 value: result
+type: token_lbrace int_type: 30 value: }
+type: token_comment int_type: 34 value: # Main program
+type: token_iden int_type: 0 value: main
+type: token_rbrace int_type: 31 value: {
+type: token_iden int_type: 0 value: print
+type: token_rparen int_type: 29 value: (
+type: token_str_literal int_type: 10 value: "Array element:"
+type: token_comma int_type: 27 value: ,
+type: token_iden int_type: 0 value: element
+type: token_lparen int_type: 28 value: )
+type: token_iden int_type: 0 value: print
+type: token_rparen int_type: 29 value: (
+type: token_str_literal int_type: 10 value: "Sum:"
+type: token_comma int_type: 27 value: ,
+type: token_iden int_type: 0 value: sum
+type: token_lparen int_type: 28 value: )
+type: token_iden int_type: 0 value: print
+type: token_rparen int_type: 29 value: (
+type: token_str_literal int_type: 10 value: "2^5:"
+type: token_comma int_type: 27 value: ,
+type: token_iden int_type: 0 value: power
+type: token_rparen int_type: 29 value: (
+type: token_int_literal int_type: 8 value: 2
+type: token_comma int_type: 27 value: ,
+type: token_int_literal int_type: 8 value: 5
+type: token_lparen int_type: 28 value: )
+type: token_lparen int_type: 28 value: )
+type: token_lbrace int_type: 30 value: }
+type: token_eof int_type: 36 value:

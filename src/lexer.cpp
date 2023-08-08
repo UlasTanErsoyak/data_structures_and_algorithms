@@ -79,6 +79,35 @@ token lexer::next_token(){
             return token("Unterminated string literal",token_type::token_err);
         }
     }
+    else if(this->src[this->pos]=='#'){
+        std::string rs;
+        while(this->src[this->pos]!='\n'){
+            rs+=this->src[this->pos];
+            advance();
+        }
+        advance();
+        return token(rs,token_type::token_comment);
+    }
+    else if(this->src[this->pos]=='^'){
+        advance();
+        return token("^",token_type::token_power);
+    }
+    else if(this->src[this->pos]=='<'&&this->peek(1)=='='){
+        advance(2);
+        return token("<=",token_type::token_lesseq);
+    }
+    else if(this->src[this->pos]=='>'&&this->peek(1)=='='){
+        advance(2);
+        return token("->",token_type::token_greateq);
+    }
+    else if(this->src[this->pos]=='>'){
+        advance();
+        return token("->",token_type::token_great);
+    }
+    else if(this->src[this->pos]=='<'){
+        advance();
+        return token("->",token_type::token_less);
+    }
     else if(this->src[this->pos]=='-'&&this->peek(1)=='>'){
         advance(2);
         return token("->",token_type::token_arrow);
@@ -102,6 +131,10 @@ token lexer::next_token(){
     else if(this->src[this->pos]==';'){
         advance();
         return token(";",token_type::token_semi);
+    }
+    else if(this->src[this->pos]==':'){
+        advance();
+        return token(":",token_type::token_colon);
     }
     else if(this->src[this->pos]=='='){
         advance();
@@ -131,26 +164,9 @@ token lexer::next_token(){
         advance();
         return token("]",token_type::token_rbrack);
     }
-    else if(this->src[this->pos]=='>'){
-        advance();
-        return token(">",token_type::token_greater);
-    }
-    else if(this->src[this->pos]=='<'){
-        advance();
-        return token("<",token_type::token_less);
-    }
     else if(this->src[this->pos]==','){
         advance();
         return token(",",token_type::token_comma);
-    }
-    else if(this->src[this->pos]=='#'){
-        std::string rs;
-        while(this->src[this->pos]!='\n'){
-            rs+=this->src[this->pos];
-            advance();
-        }
-        advance();
-        return token(rs,token_type::token_comment);
     }
     return token("unexpected char", token_type::token_err);
 }

@@ -1,0 +1,78 @@
+a[5]->int = [1,2,3,4,5];
+bundle{
+    a->int;
+    b->char;
+};
+#comment test
+for(i->int=0;i<5;i=i+1){
+    a[i]=a[i]*3;
+}
+
+
+! LEXER OUTPUT !
+
+type: token_iden int_type: 0 value: a       
+type: token_lbrack int_type: 28 value: [    
+type: token_int_literal int_type: 8 value: 5
+type: token_rbrack int_type: 29 value: ]    
+type: token_arrow int_type: 1 value: ->     
+type: token_int int_type: 3 value: int      
+type: token_assign int_type: 12 value: =    
+type: token_lbrack int_type: 28 value: [    
+type: token_int_literal int_type: 8 value: 1
+type: token_comma int_type: 23 value: ,     
+type: token_int_literal int_type: 8 value: 2
+type: token_comma int_type: 23 value: ,     
+type: token_int_literal int_type: 8 value: 3
+type: token_comma int_type: 23 value: ,     
+type: token_int_literal int_type: 8 value: 4
+type: token_comma int_type: 23 value: ,     
+type: token_int_literal int_type: 8 value: 5
+type: token_rbrack int_type: 29 value: ]
+type: token_semi int_type: 22 value: ;
+type: token_bundle int_type: 7 value: bundle
+type: token_rbrace int_type: 27 value: {
+type: token_iden int_type: 0 value: a
+type: token_arrow int_type: 1 value: ->
+type: token_int int_type: 3 value: int
+type: token_semi int_type: 22 value: ;
+type: token_iden int_type: 0 value: b
+type: token_arrow int_type: 1 value: ->
+type: token_char int_type: 4 value: char
+type: token_semi int_type: 22 value: ;
+type: token_lbrace int_type: 26 value: }
+type: token_semi int_type: 22 value: ;
+type: token_comment int_type: 30 value: #comment test
+type: token_for int_type: 15 value: for
+type: token_rparen int_type: 25 value: (
+type: token_iden int_type: 0 value: i
+type: token_arrow int_type: 1 value: ->
+type: token_int int_type: 3 value: int
+type: token_assign int_type: 12 value: =
+type: token_int_literal int_type: 8 value: 0
+type: token_semi int_type: 22 value: ;
+type: token_iden int_type: 0 value: i
+type: unknown token type int_type: 21 value: <
+type: token_int_literal int_type: 8 value: 5
+type: token_semi int_type: 22 value: ;
+type: token_iden int_type: 0 value: i
+type: token_assign int_type: 12 value: =
+type: token_iden int_type: 0 value: i
+type: token_accumulate int_type: 18 value: +
+type: token_int_literal int_type: 8 value: 1
+type: token_lparen int_type: 24 value: )
+type: token_rbrace int_type: 27 value: {
+type: token_iden int_type: 0 value: a
+type: token_lbrack int_type: 28 value: [
+type: token_iden int_type: 0 value: i
+type: token_rbrack int_type: 29 value: ]
+type: token_assign int_type: 12 value: =
+type: token_iden int_type: 0 value: a
+type: token_lbrack int_type: 28 value: [
+type: token_iden int_type: 0 value: i
+type: token_rbrack int_type: 29 value: ]
+type: token_multiply int_type: 16 value: *
+type: token_int_literal int_type: 8 value: 3
+type: token_semi int_type: 22 value: ;
+type: token_lbrace int_type: 26 value: }
+type: token_eof int_type: 32 value:
