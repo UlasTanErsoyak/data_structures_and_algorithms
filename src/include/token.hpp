@@ -26,11 +26,15 @@ enum token_type{
     token_divide,
     token_accumulate,
     token_substract,
-    token_greater,
+    token_power,
+    token_great,
+    token_greateq,
     token_less,
+    token_lesseq,
 
 
     token_semi,
+    token_colon,
     token_comma,
 
     token_lparen,//(
@@ -79,10 +83,16 @@ class token{
         {token_type::token_multiply,"token_multiply"},
         {token_type::token_accumulate,"token_accumulate"},
         {token_type::token_substract,"token_substract"},
+        {token_type::token_power,"token_power"},
+        {token_type::token_great,"token_greater"},
+        {token_type::token_greateq,"token_greatereq"},
+        {token_type::token_less,"token_less"},
+        {token_type::token_lesseq,"token_lesseq"},
         {token_type::token_assign,"token_assign"},
         {token_type::token_for,"token_for"},
         {token_type::token_while,"token_while"},
         {token_type::token_semi,"token_semi"},
+        {token_type::token_colon,"token_colon"},
         {token_type::token_lparen,"token_lparen"},
         {token_type::token_rparen,"token_rparen"},
         {token_type::token_lbrace,"token_lbrace"},
