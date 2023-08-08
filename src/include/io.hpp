@@ -3,8 +3,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-std::string read_from_file(std::string path){
-    if(path.substr(path.length() - 3) != ".sg"){
+std::string read_from_file(std::string& path){
+    if(path.substr(path.length() - 4) != ".yvt"){
         return "";
     }
     std::ifstream f(path);
