@@ -84,11 +84,11 @@ void convert_to_binary(struct bmp_image* image,int8_t threshold){
         }
     }
 }
-void _add_padding(struct bmp_image* image,int padding){
+static void _add_padding(struct bmp_image* image,int padding){
     /*adjust padding to next number if padding is odd. odd numbers make program produce some garbage images
     because bitmaps have to be alligned to 4 bytes. could've solved differently but im too lazy for that(for now)*/
     //TODO: fix odd padding bug
-    padding += padding % 2 == 1 ? 1 : 0;
+    padding += padding % 2 == 1 ? 1 : 0; //\ ( ͡° ͜ʖ ͡°) //\
     //construct new images resolution with added padding.
     int new_height=image->header.height+(padding*2);
     int new_width=image->header.width+(padding*2);
@@ -123,7 +123,7 @@ void _add_padding(struct bmp_image* image,int padding){
     free(image->pixels);
     image->pixels=output_pixels;
 }
-void convolution(struct bmp_image* image,int** kernel,uint8_t kernel_size,uint8_t stride,uint8_t padding){
+void convolution(struct bmp_image* image,uint8_t kernel_size,uint8_t stride,uint8_t padding){
     if(stride==0){
         printf("error [bmp_image:convolution]->stride cant be smaller than 1");
         for(int i=0;i<image->header.height-2*padding;i++){
