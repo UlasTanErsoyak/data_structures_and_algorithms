@@ -86,7 +86,8 @@ void convert_to_binary(struct bmp_image* image,int8_t threshold){
 }
 static void _add_padding(struct bmp_image* image,int padding){
     /*adjust padding to next number if padding is odd. odd numbers make program produce some garbage images
-    because bitmaps have to be alligned to 4 bytes. could've solved differently but im too lazy for that(for now)*/
+    because bitmaps have to be alligned to 4 bytes. could've solved differently but im too lazy for that(for now)
+    https://stackoverflow.com/questions/76875278/bmp-image-padding-in-c-from-scratch */
     //TODO: fix odd padding bug
     padding += padding % 2 == 1 ? 1 : 0; //\ ( ͡° ͜ʖ ͡°) //\
     //construct new images resolution with added padding.
@@ -135,10 +136,20 @@ void convolution(struct bmp_image* image,uint8_t kernel_size,uint8_t stride,uint
     if(padding>0){
         _add_padding(image,padding);
     }
-    int new_height=(image->header.height-kernel_size+2*padding)/stride+1;
-    int new_width=(image->header.width-kernel_size+2*padding)/stride+1;
+    int kernel[3][3]={
+        {1,1,1},
+        {1,1,1},
+        {1,1,1}
+    };
+    int new_height=((image->header.height-kernel_size+2*padding)/stride)+1;
+    int new_width=((image->header.width-kernel_size+2*padding)/stride)+1;
     struct pixel** output_pixels =(struct pixel**)malloc(new_height*sizeof(struct pixel*));
     for (int i=0;i<new_height;i++){
         output_pixels[i]=malloc(new_width*sizeof(struct pixel));
+    }
+    for(int i=padding;i<image->header.height-padding;i++){
+        for(int j=padding;j<image->header.width-padding;j++){
+            image->pixels[i][j];
+        }
     }
 }
