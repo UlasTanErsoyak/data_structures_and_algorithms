@@ -68,6 +68,19 @@ void convert_to_bw(struct bmp_image* image){
         }
     }
 }
-void convert_to_bimary(struct bmp_image* image,int8_t threshold){
-
+void convert_to_binary(struct bmp_image* image,int8_t threshold){
+    for(int i=0;i<image->header.height;i++){
+        for(int j=0;j<image->header.width;j++){
+            int avg=(image->pixels[i][j].red+image->pixels[i][j].green+image->pixels[i][j].blue)/3;
+            if(avg<threshold){
+                image->pixels[i][j].red=0;
+                image->pixels[i][j].green=0;
+                image->pixels[i][j].blue=0;
+            }else{
+                image->pixels[i][j].red=255;
+                image->pixels[i][j].green=255;
+                image->pixels[i][j].blue=255;
+            }
+        }
+    }
 }
