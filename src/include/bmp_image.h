@@ -34,10 +34,11 @@ struct bmp_header{
 };
 #pragma pack(pop)
 struct bmp_image{
+    char* file_path;
     struct bmp_header header;
-    struct pixel pixels[];
+    struct pixel* pixels;
 };
-struct bmp_header _read_header(const char* file_path);
-struct pixel* _read_pixels(const struct bmp_header* header);
-struct bmp_image read_img(const char* file_path);
+struct bmp_header _read_header(FILE* bmp_file,char* file_path);
+struct pixel* _read_pixels(FILE* bmp_file,char* file_path,struct bmp_header* header);
+struct bmp_image* read_img(char* file_path);
 #endif
