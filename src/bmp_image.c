@@ -16,7 +16,7 @@ static struct bmp_header _read_header(FILE* bmp_file,char* file_path){
     return header;
 }
 static struct pixel** _read_pixels(FILE* bmp_file,char* file_path,struct bmp_header* header){
-    struct pixel** pixels = (struct pixel**)malloc(header->height*sizeof(struct pixel*));
+    struct pixel** pixels=(struct pixel**)malloc(header->height*sizeof(struct pixel*));
     for (int i=0;i<header->height;i++) {
         pixels[i]=(struct pixel*)malloc(header->width*sizeof(struct pixel));
     }
@@ -83,4 +83,42 @@ void convert_to_binary(struct bmp_image* image,int8_t threshold){
             }
         }
     }
+}
+static void _add_padding(struct bmp_image* image,int padding){
+    //construct new images resolution with added padding.
+    int new_height=image->header.height+padding*2;
+    int new_width=image->header.width+padding*2;
+    //allocate new image to the memory.
+    struct pixel** pixels=(struct pixel**)malloc(new_height*sizeof(struct pixel*));
+    for(int i=0;i<new_height;i++) {
+        pixels[i]=malloc(new_width*sizeof(struct pixel));
+    }
+    //initialize new image with all zeros.
+    for(int i=0;i<new_height; i++){
+        memset(pixels[i],0,new_width*sizeof(struct pixel));
+    }
+    //wtf
+    for(int i=padding;i<image->header.height+padding;i++){
+        memcpy(pixels[i]+padding,image->pixels[i-padding],image->header.width*sizeof(struct pixel));
+    }
+    image->header.height=new_height;
+    image->header.width=new_width;
+    for(int i=0;i<image->header.height-2*padding;i++){
+        free(image->pixels[i]);
+    }
+    free(image->pixels);
+    image->pixels=pixels;
+}
+static void convolution(struct bmp_image* image,int** kernel,uint8_t kernel_size,uint8_t stride,uint8_t padding){
+    if(padding>0){
+        _add_padding(image,padding);
+    }
+    int new_height=(image->header.height-kernel_size+2*padding)/stride+1;
+    int new_width=(image->header.width-kernel_size+2*padding)/stride+1;
+    struct pixel** pixels =(struct pixel**)malloc(new_height*sizeof(struct pixel*));
+    for (int i=0;i<new_height;i++){
+        pixels[i]=malloc(new_width*sizeof(struct pixel));
+    }
+
+
 }

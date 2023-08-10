@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 /*this program will only be able to read 24 bit bitmaps (for now-maybe for ever)
 so each colour channel gets 8 bits each.*/
 struct pixel{
@@ -44,4 +45,6 @@ struct bmp_image* read_img(char* file_path);
 void write_img(struct bmp_image* img,char* file_name);
 void convert_to_bw(struct bmp_image* image);
 void convert_to_binary(struct bmp_image* image,int8_t threshold);
+static void _add_padding(struct bmp_image*,int padding);
+static void convolution(struct bmp_image* image,int** kernel,uint8_t kernel_size,uint8_t stride,uint8_t padding);
 #endif
