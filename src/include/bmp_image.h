@@ -1,20 +1,22 @@
+#ifndef BMP_IMG_H
+#define BMP_IMG_H
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 /*this program will only be able to read 24 bit bitmaps (for now-maybe for ever)
 so each colour channel gets 8 bits each.*/
-struct Pixel {
+struct pixel{
     uint8_t red;
     uint8_t green;
     uint8_t blue;
 };
-#pragma pack(push, 1)
+#pragma pack(push,1)
 /*each bitmap file is 54 byte and the data is in that particular order with each block taking a constant
 amount of memory. since the order and memory is constant, it allows the program to be able to read the bmp file directly 
 as a byte stream. the #pragma pack(push,1) guarentees that the elements of this particular struck is adjacent in the
 computers memory. #pragma pack(pop) restores the memory alignment to the default after this struct is initialized*/
-struct bmp_header {
-    uint16_t signature;//size:2byte.identifies file.usefull when checking if file is a bitmap or not.
+struct bmp_header{
+    uint16_t signature;//size:2byte.identifies file.usefull when checking if file is a bitmap or not.0x4D42 and "BM" is valid.
     uint32_t file_size;//size:4byte.total size of the bitmap.54 bit header + (img_height*img_width).
     uint32_t reserved;//size:4byte.reserved memory. typically set to 0 and unused.
     uint32_t data_offset;//size:4byte.indicates where header info ends and pixels start.
@@ -31,4 +33,11 @@ struct bmp_header {
     uint32_t important_colours;//size:4byte.indicates number of important colours.usually 0,indicating all colours have equal importance
 };
 #pragma pack(pop)
-
+struct bmp_image{
+    struct bmp_header header;
+    struct pixel pixels[];
+};
+struct bmp_header _read_header(const char* file_path);
+struct pixel* _read_pixels(const struct bmp_header* header);
+struct bmp_image read_img(const char* file_path);
+#endif
