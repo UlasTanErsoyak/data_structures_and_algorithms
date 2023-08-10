@@ -36,9 +36,12 @@ struct bmp_header{
 struct bmp_image{
     char* file_path;
     struct bmp_header header;
-    struct pixel* pixels;
+    struct pixel** pixels;
 };
-struct bmp_header _read_header(FILE* bmp_file,char* file_path);
-struct pixel* _read_pixels(FILE* bmp_file,char* file_path,struct bmp_header* header);
+static struct bmp_header _read_header(FILE* bmp_file,char* file_path);
+static struct pixel** _read_pixels(FILE* bmp_file,char* file_path,struct bmp_header* header);
 struct bmp_image* read_img(char* file_path);
+void write_img(struct bmp_image* img,char* file_name);
+void convert_to_bw(struct bmp_image* image);
+void convert_to_bimary(struct bmp_image* image,int8_t threshold);
 #endif
