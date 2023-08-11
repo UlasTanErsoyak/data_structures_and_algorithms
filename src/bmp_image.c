@@ -71,7 +71,7 @@ void convert_to_bw(struct bmp_image* image){
 void convert_to_binary(struct bmp_image* image,int8_t threshold){
     for(int i=0;i<image->header.height;i++){
         for(int j=0;j<image->header.width;j++){
-            int avg=(image->pixels[i][j].red+image->pixels[i][j].green+image->pixels[i][j].blue)/3;
+            uint8_t avg=(image->pixels[i][j].red+image->pixels[i][j].green+image->pixels[i][j].blue)/3;
             if(avg<threshold){
                 image->pixels[i][j].red=0;
                 image->pixels[i][j].green=0;
@@ -84,12 +84,11 @@ void convert_to_binary(struct bmp_image* image,int8_t threshold){
         }
     }
 }
-static void _add_padding(struct bmp_image* image,int padding){
+void _add_padding(struct bmp_image* image,int padding){
     /*adjust padding to next number if padding is odd. odd numbers make program produce some garbage images
     because bitmaps have to be alligned to 4 bytes. could've solved differently but im too lazy for that(for now)
     https://stackoverflow.com/questions/76875278/bmp-image-padding-in-c-from-scratch */
     //TODO: fix odd padding bug
-    padding += padding % 2 == 1 ? 1 : 0; //\ ( ͡° ͜ʖ ͡°) //\
     //construct new images resolution with added padding.
     int new_height=image->header.height+(padding*2);
     int new_width=image->header.width+(padding*2);
@@ -147,9 +146,28 @@ void convolution(struct bmp_image* image,uint8_t kernel_size,uint8_t stride,uint
     for (int i=0;i<new_height;i++){
         output_pixels[i]=malloc(new_width*sizeof(struct pixel));
     }
-    for(int i=padding;i<image->header.height-padding;i++){
-        for(int j=padding;j<image->header.width-padding;j++){
-            image->pixels[i][j];
+    for(int i=padding; i<image->header.height-padding; i+=stride) {
+        for(int j=padding; j<image->header.width-padding; j+=stride) {
+            int sum_red = 0, sum_green = 0, sum_blue = 0;
+
+            for(int k = -kernel_size/2; k <= kernel_size/2; k++) {
+                for(int l = -kernel_size/2; l <= kernel_size/2; l++) {
+                    sum_red += kernel[k+1][l+1] * image->pixels[i+k][j+l].red;
+                    sum_green += kernel[k+1][l+1] * image->pixels[i+k][j+l].green;
+                    sum_blue += kernel[k+1][l+1] * image->pixels[i+k][j+l].blue;
+                }
+            }
+
+            output_pixels[i][j].red = sum_red;
+            output_pixels[i][j].green = sum_green;
+            output_pixels[i][j].blue = sum_blue;
         }
     }
+    image->header.width=new_width;
+    image->header.height=new_height;
+    for(int i=0;i<image->header.height;i++){
+        free(image->pixels[i]);
+    }
+    free(image->pixels);
+    image->pixels=output_pixels;
 }
