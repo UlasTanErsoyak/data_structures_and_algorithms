@@ -11,7 +11,6 @@ struct pixel{
     uint8_t red;
     uint8_t green;
     uint8_t blue;
-    uint8_t padding;
 };
 #pragma pack(push,1)
 /*each bitmap file is 54 byte and the data is in that particular order with each block taking a constant

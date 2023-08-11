@@ -12,8 +12,7 @@ static struct bmp_header _read_header(FILE* bmp_file,char* file_path){
         printf("error [bmp_image:_read_header]->memory allocation failed for %s",file_path);
         fclose(bmp_file);
         exit(1);
-    }
-    return header;
+    }    return header;
 }
 static struct pixel** _read_pixels(FILE* bmp_file,char* file_path,struct bmp_header* header){
     struct pixel** pixels=(struct pixel**)malloc(header->height*sizeof(struct pixel*));
@@ -30,7 +29,6 @@ static struct pixel** _read_pixels(FILE* bmp_file,char* file_path,struct bmp_hea
     }
     return pixels;
 }
-/*reads the file on the given path.returns a struct pointer that has the header info,all pixels as an array and file_path as fields.*/
 struct bmp_image* read_img(char* file_path){
     FILE* bmp_file=fopen(file_path,"rb");
     if(bmp_file==NULL){
@@ -61,10 +59,11 @@ void write_img(struct bmp_image* image,char* file_name){
 void convert_to_bw(struct bmp_image* image){
     for (int i=0;i<image->header.height;i++) {
         for(int j=0;j<image->header.width;j++){
-            int avg=(image->pixels[i][j].red+image->pixels[i][j].green+image->pixels[i][j].blue)/3;
-            image->pixels[i][j].red=avg;
-            image->pixels[i][j].green=avg;
-            image->pixels[i][j].blue=avg;
+            int luminosity=0.21*image->pixels[i][j].red+0.72*image->pixels[i][j].green+0.07*image->pixels[i][j].blue;
+            luminosity=(luminosity<0)?0:(luminosity>255)?255:luminosity;
+            image->pixels[i][j].red=luminosity;
+            image->pixels[i][j].green=luminosity;
+            image->pixels[i][j].blue=luminosity;
         }
     }
 }
@@ -84,45 +83,35 @@ void convert_to_binary(struct bmp_image* image,int8_t threshold){
         }
     }
 }
-void _add_padding(struct bmp_image* image,int padding){
-    /*adjust padding to next number if padding is odd. odd numbers make program produce some garbage images
-    because bitmaps have to be alligned to 4 bytes. could've solved differently but im too lazy for that(for now)
-    https://stackoverflow.com/questions/76875278/bmp-image-padding-in-c-from-scratch */
-    //TODO: fix odd padding bug
-    //construct new images resolution with added padding.
-    int new_height=image->header.height+(padding*2);
-    int new_width=image->header.width+(padding*2);
-    //allocate new image to the memory.
+void _add_padding(struct bmp_image* image,int padding) {
+    int new_width=image->header.width+(2*padding);
+    new_width+=(new_width%4==0)?0:(4-new_width%4);
+    int new_height = image->header.height+(2*padding);
+
     struct pixel** output_pixels=(struct pixel**)malloc(new_height*sizeof(struct pixel*));
-    for(int i=0;i<new_height;i++){
-        output_pixels[i]=malloc(new_width*sizeof(struct pixel));
+    for (int i = 0; i < new_height; i++) {
+        output_pixels[i]=(struct pixel*)malloc(new_width*sizeof(struct pixel));
     }
-    //initialize new image with all zeros.
-    int new_colour=255;
-    for(int i=0;i<new_height;i++){
-        for(int j=0;j<new_width;j++){
-            output_pixels[i][j].red=new_colour;
-            output_pixels[i][j].green=new_colour;
-            output_pixels[i][j].blue=new_colour;
+    struct pixel padding_color={255,255,255};
+    for (int i=0;i<new_height;i++){
+        for (int j=0;j<new_width;j++) {
+            output_pixels[i][j]=padding_color;
         }
     }
-    // wtf
-    for(int i=padding;i<image->header.height+padding;i++){
-        for(int j=padding;j<image->header.width+padding;j++){
-            output_pixels[i][j].red=image->pixels[i-padding][j-padding].red;
-            output_pixels[i][j].green=image->pixels[i-padding][j-padding].green;
-            output_pixels[i][j].blue=image->pixels[i-padding][j-padding].blue;
+    for (int i=padding;i<image->header.height+padding;i++){
+        for (int j=padding;j<image->header.width+padding;j++){
+            output_pixels[i][j]=image->pixels[i-padding][j-padding];
         }
-        //memcpy(pixels[i]+padding,image->pixels[i-padding+image->header.height],image->header.width*sizeof(struct pixel));
     }
-    image->header.height=new_height;
-    image->header.width=new_width;
-    for(int i=0;i<image->header.height-2*padding;i++){
+    for (int i=0;i<image->header.height;i++){
         free(image->pixels[i]);
     }
     free(image->pixels);
+    image->header.width=new_width;
+    image->header.height=new_height;
     image->pixels=output_pixels;
 }
+
 void convolution(struct bmp_image* image,uint8_t kernel_size,uint8_t stride,uint8_t padding){
     if(stride==0){
         printf("error [bmp_image:convolution]->stride cant be smaller than 1");
@@ -135,39 +124,4 @@ void convolution(struct bmp_image* image,uint8_t kernel_size,uint8_t stride,uint
     if(padding>0){
         _add_padding(image,padding);
     }
-    int kernel[3][3]={
-        {1,1,1},
-        {1,1,1},
-        {1,1,1}
-    };
-    int new_height=((image->header.height-kernel_size+2*padding)/stride)+1;
-    int new_width=((image->header.width-kernel_size+2*padding)/stride)+1;
-    struct pixel** output_pixels =(struct pixel**)malloc(new_height*sizeof(struct pixel*));
-    for (int i=0;i<new_height;i++){
-        output_pixels[i]=malloc(new_width*sizeof(struct pixel));
-    }
-    for(int i=padding; i<image->header.height-padding; i+=stride) {
-        for(int j=padding; j<image->header.width-padding; j+=stride) {
-            int sum_red = 0, sum_green = 0, sum_blue = 0;
-
-            for(int k = -kernel_size/2; k <= kernel_size/2; k++) {
-                for(int l = -kernel_size/2; l <= kernel_size/2; l++) {
-                    sum_red += kernel[k+1][l+1] * image->pixels[i+k][j+l].red;
-                    sum_green += kernel[k+1][l+1] * image->pixels[i+k][j+l].green;
-                    sum_blue += kernel[k+1][l+1] * image->pixels[i+k][j+l].blue;
-                }
-            }
-
-            output_pixels[i][j].red = sum_red;
-            output_pixels[i][j].green = sum_green;
-            output_pixels[i][j].blue = sum_blue;
-        }
-    }
-    image->header.width=new_width;
-    image->header.height=new_height;
-    for(int i=0;i<image->header.height;i++){
-        free(image->pixels[i]);
-    }
-    free(image->pixels);
-    image->pixels=output_pixels;
 }
