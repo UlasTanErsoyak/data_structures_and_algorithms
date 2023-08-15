@@ -67,7 +67,7 @@ void convert_to_bw(struct bmp_image* image){
         }
     }
 }
-void convert_to_binary(struct bmp_image* image,int8_t threshold){
+void convert_to_binary(struct bmp_image* image,const int8_t threshold){
     for(int i=0;i<image->header.height;i++){
         for(int j=0;j<image->header.width;j++){
             uint8_t avg=(image->pixels[i][j].red+image->pixels[i][j].green+image->pixels[i][j].blue)/3;
@@ -83,45 +83,59 @@ void convert_to_binary(struct bmp_image* image,int8_t threshold){
         }
     }
 }
-void _add_padding(struct bmp_image* image,int padding) {
-    int new_width=image->header.width+(2*padding);
-    new_width+=(new_width%4==0)?0:(4-new_width%4);
-    int new_height = image->header.height+(2*padding);
-
+static void _add_padding(struct bmp_image* image){
+    int new_width=image->header.width+2*PADDING_OFFSET;
+    int new_height = image->header.height+2*PADDING_OFFSET;
     struct pixel** output_pixels=(struct pixel**)malloc(new_height*sizeof(struct pixel*));
-    for (int i = 0; i < new_height; i++) {
-        output_pixels[i]=(struct pixel*)malloc(new_width*sizeof(struct pixel));
-    }
-    struct pixel padding_color={255,255,255};
     for (int i=0;i<new_height;i++){
-        for (int j=0;j<new_width;j++) {
-            output_pixels[i][j]=padding_color;
-        }
+        output_pixels[i]=(struct pixel*)calloc(new_width,sizeof(struct pixel));
     }
-    for (int i=padding;i<image->header.height+padding;i++){
-        for (int j=padding;j<image->header.width+padding;j++){
-            output_pixels[i][j]=image->pixels[i-padding][j-padding];
+    for (int i=PADDING_OFFSET;i<image->header.height+PADDING_OFFSET;i++){
+        for (int j=PADDING_OFFSET;j<image->header.width+PADDING_OFFSET;j++){
+            output_pixels[i][j]=image->pixels[i-PADDING_OFFSET][j-PADDING_OFFSET];
         }
     }
     for (int i=0;i<image->header.height;i++){
         free(image->pixels[i]);
     }
     free(image->pixels);
-    image->header.width=new_width;
-    image->header.height=new_height;
     image->pixels=output_pixels;
 }
-
-void convolution(struct bmp_image* image,uint8_t kernel_size,uint8_t stride,uint8_t padding){
-    if(stride==0){
-        printf("error [bmp_image:convolution]->stride cant be smaller than 1");
-        for(int i=0;i<image->header.height-2*padding;i++){
-            free(image->pixels[i]);
+void convolution(struct bmp_image* image){
+    struct pixel** output_pixels=(struct pixel**)malloc(image->header.height*sizeof(struct pixel*));
+    for (int i=0;i<image->header.height;i++){
+        output_pixels[i]=(struct pixel*)calloc(image->header.width,sizeof(struct pixel));
+    }
+    _add_padding(image);
+    int kernel[3][3]={{1,1,1},{1,1,1},{1,1,1}};
+    int r_sum=0;
+    int g_sum=0;
+    int b_sum=0;
+    for (int i=PADDING_OFFSET;i<image->header.height;i++){
+        r_sum=0;
+        g_sum=0;
+        b_sum=0;
+        for (int j=PADDING_OFFSET;j<image->header.width;j++){
+            for(int ki=-1;ki<2;ki++){
+                for(int kj=-1;kj<2;kj++){
+                    int x_idx=i+ki;
+                    int y_idx=j+kj;
+                    r_sum+=kernel[x_idx][y_idx]*(image->pixels[x_idx][y_idx].red);
+                    b_sum+=kernel[x_idx][y_idx]*(image->pixels[x_idx][y_idx].blue);
+                    g_sum+=kernel[x_idx][y_idx]*(image->pixels[x_idx][y_idx].green);
+                }
+            }
+            output_pixels[i-PADDING_OFFSET][j-PADDING_OFFSET].red=r_sum;
+            output_pixels[i-PADDING_OFFSET][j-PADDING_OFFSET].green=g_sum;
+            output_pixels[i-PADDING_OFFSET][j-PADDING_OFFSET].blue=b_sum;
         }
-        free(image->pixels);
-        exit(1);
     }
-    if(padding>0){
-        _add_padding(image,padding);
+    for (int i=0;i<image->header.height;i++){
+        free(image->pixels[i]);
     }
+    free(image->pixels);
+    image->pixels=output_pixels;    
+}
+void blur(struct bmp_image* image){
+    //TODO
 }

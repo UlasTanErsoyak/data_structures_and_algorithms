@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
-project(compiler)
+project(nn)
 include_directories(include)
-
+add_compile_options(-g -Wall -Wextra -Wpedantic)
 set(HEADERS
     src/include/bmp_image.h
     src/include/matrix_math.h
