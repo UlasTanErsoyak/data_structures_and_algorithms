@@ -50,7 +50,11 @@ void write_img(struct bmp_image* img,char* file_name);
 void convert_to_bw(struct bmp_image* image);
 void convert_to_binary(struct bmp_image* image,const int8_t threshold);
 static void _add_padding(struct bmp_image*);
-void convolution(struct bmp_image* image);
-static void _normalize_img(struct bmp_image* image);
+static void convolution(struct bmp_image* image,int** kernel);
+// static void _normalize_img(struct bmp_image* image);
 void blur(struct bmp_image* image);
+void g_blur(struct bmp_image* image, double sigma);
+void v_edge(struct bmp_image* image);
+void h_edge(struct bmp_image* image);
+void concat(struct bmp_image* image1,struct bmp_image* image2);
 #endif
