@@ -9,6 +9,6 @@ int main() {
     // convert_to_binary(x,120);
     // write_img(x,"../out/blackbuck_bn.bmp");
     convolution(x);
-    write_img(x,"../out/blackbuck_convolved.bmp");
+    write_img(x,"../out/x.bmp");
     return 0;
 }

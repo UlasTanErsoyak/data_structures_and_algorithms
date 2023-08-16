@@ -104,38 +104,65 @@ static void _add_padding(struct bmp_image* image){
 void convolution(struct bmp_image* image){
     struct pixel** output_pixels=(struct pixel**)malloc(image->header.height*sizeof(struct pixel*));
     for (int i=0;i<image->header.height;i++){
-        output_pixels[i]=(struct pixel*)calloc(image->header.width,sizeof(struct pixel));
+        output_pixels[i]=(struct pixel*)malloc(image->header.width*sizeof(struct pixel));
     }
     _add_padding(image);
     int kernel[3][3]={{1,1,1},{1,1,1},{1,1,1}};
     int r_sum=0;
     int g_sum=0;
     int b_sum=0;
-    for (int i=PADDING_OFFSET;i<image->header.height;i++){
-        r_sum=0;
-        g_sum=0;
-        b_sum=0;
-        for (int j=PADDING_OFFSET;j<image->header.width;j++){
+    for (int i=PADDING_OFFSET;i<image->header.height+PADDING_OFFSET;i++){
+        for (int j=PADDING_OFFSET;j<image->header.width+PADDING_OFFSET;j++){
+            r_sum=0;
+            g_sum=0;
+            b_sum=0;
             for(int ki=-1;ki<2;ki++){
                 for(int kj=-1;kj<2;kj++){
                     int x_idx=i+ki;
                     int y_idx=j+kj;
-                    r_sum+=kernel[x_idx][y_idx]*(image->pixels[x_idx][y_idx].red);
-                    b_sum+=kernel[x_idx][y_idx]*(image->pixels[x_idx][y_idx].blue);
-                    g_sum+=kernel[x_idx][y_idx]*(image->pixels[x_idx][y_idx].green);
+                    r_sum+=kernel[ki+1][kj+1]*(image->pixels[x_idx][y_idx].red);
+                    b_sum+=kernel[ki+1][kj+1]*(image->pixels[x_idx][y_idx].blue);
+                    g_sum+=kernel[ki+1][kj+1]*(image->pixels[x_idx][y_idx].green);
                 }
             }
-            output_pixels[i-PADDING_OFFSET][j-PADDING_OFFSET].red=r_sum;
-            output_pixels[i-PADDING_OFFSET][j-PADDING_OFFSET].green=g_sum;
-            output_pixels[i-PADDING_OFFSET][j-PADDING_OFFSET].blue=b_sum;
+            output_pixels[i-PADDING_OFFSET][j-PADDING_OFFSET].red=(int)r_sum/9;
+            output_pixels[i-PADDING_OFFSET][j-PADDING_OFFSET].green=(int)g_sum/9;
+            output_pixels[i-PADDING_OFFSET][j-PADDING_OFFSET].blue=(int)b_sum/9;
         }
     }
     for (int i=0;i<image->header.height;i++){
         free(image->pixels[i]);
     }
     free(image->pixels);
-    image->pixels=output_pixels;    
+    image->pixels=output_pixels;
+    // _normalize_img(image);
 }
+static void _normalize_img(struct bmp_image* image){
+    int r_max_value=0;
+    int g_max_value=0;
+    int b_max_value=0;
+    int r_min_value=255;
+    int g_min_value=255;
+    int b_min_value=255;
+    for (int i=0;i<image->header.height;i++) {
+        for (int j=0;j<image->header.width;j++) {
+            r_max_value=max(r_max_value,image->pixels[i][j].red);
+            g_max_value=max(g_max_value,image->pixels[i][j].green);
+            b_max_value=max(b_max_value,image->pixels[i][j].blue);
+            r_min_value=min(r_min_value,image->pixels[i][j].red);
+            g_min_value=min(g_min_value,image->pixels[i][j].green);
+            b_min_value=min(b_min_value,image->pixels[i][j].blue);
+        }
+    }
+    for (int i=0;i<image->header.height;i++) {
+        for (int j=0;j<image->header.width;j++) {
+            image->pixels[i][j].red=(int)(((double)(image->pixels[i][j].red-r_min_value)/(r_max_value-r_min_value))*255);
+            image->pixels[i][j].green=(int)(((double)(image->pixels[i][j].green-g_min_value)/(g_max_value-g_min_value))*255);
+            image->pixels[i][j].blue=(int)(((double)(image->pixels[i][j].blue-b_min_value)/(b_max_value-b_min_value))*255);
+        }
+    }
+}
+
 void blur(struct bmp_image* image){
     //TODO
 }

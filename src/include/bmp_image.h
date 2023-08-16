@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include "custom_math.h"
 #define PADDING_OFFSET 1
 //https://stackoverflow.com/questions/65840161/write-bmp-image 
 /*this program will only be able to read 24bit bitmaps (for now-maybe for ever)
@@ -50,5 +51,6 @@ void convert_to_bw(struct bmp_image* image);
 void convert_to_binary(struct bmp_image* image,const int8_t threshold);
 static void _add_padding(struct bmp_image*);
 void convolution(struct bmp_image* image);
+static void _normalize_img(struct bmp_image* image);
 void blur(struct bmp_image* image);
 #endif
