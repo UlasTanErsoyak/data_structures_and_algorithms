@@ -1,0 +1,26 @@
+# Array manipulation
+arr = [1, 2, 3, 4, 5]
+length = size(arr)
+element = arr[2]
+
+# Loop to calculate sum
+sum = 0
+for (i = 0; i < size(arr); i = i + 1) {
+    sum = sum + arr[i]
+}
+
+# Function to calculate power
+function power(base->int, exponent->int): int {
+    result = 1
+    for (i = 0; i < exponent; i = i + 1) {
+        result = result * base
+    }
+    return result
+}
+
+# Main program
+main {
+    print("Array element:", element)
+    print("Sum:", sum)
+    print("2^5:", power(2, 5))
+}

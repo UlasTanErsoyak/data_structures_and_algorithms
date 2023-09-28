@@ -1,0 +1,80 @@
+
+
+
+# Simple function to calculate the factorial of a number
+function factorial(n->int): int {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+# Main program
+main {
+    # Calculate factorial of 5
+    result = factorial(5);
+
+    # Print the result
+    print(result);
+}
+
+
+
+
+! LEXER OUTPUT !
+
+
+
+
+type: token_comment int_type: 33 value: # Simple function to calculate the factorial of a number
+type: token_iden int_type: 0 value: function
+type: token_iden int_type: 0 value: factorial
+type: token_rparen int_type: 28 value: (
+type: token_iden int_type: 0 value: n
+type: token_arrow int_type: 1 value: ->
+type: token_int int_type: 3 value: int
+type: token_lparen int_type: 27 value: )
+type: token_colon int_type: 25 value: :
+type: token_int int_type: 3 value: int
+type: token_rbrace int_type: 30 value: {
+type: unknown token type int_type: 13 value: if
+type: token_rparen int_type: 28 value: (
+type: token_iden int_type: 0 value: n
+type: token_lesseq int_type: 23 value: <=
+type: token_int_literal int_type: 8 value: 1
+type: token_lparen int_type: 27 value: )
+type: token_rbrace int_type: 30 value: {
+type: token_iden int_type: 0 value: return
+type: token_int_literal int_type: 8 value: 1
+type: token_semi int_type: 24 value: ;
+type: token_lbrace int_type: 29 value: }
+type: token_iden int_type: 0 value: return
+type: token_iden int_type: 0 value: n
+type: token_multiply int_type: 16 value: *
+type: token_iden int_type: 0 value: factorial
+type: token_rparen int_type: 28 value: (
+type: token_iden int_type: 0 value: n
+type: token_substract int_type: 19 value: -
+type: token_int_literal int_type: 8 value: 1
+type: token_lparen int_type: 27 value: )
+type: token_semi int_type: 24 value: ;
+type: token_lbrace int_type: 29 value: }
+type: token_comment int_type: 33 value: # Main program
+type: token_iden int_type: 0 value: main
+type: token_rbrace int_type: 30 value: {
+type: token_comment int_type: 33 value: # Calculate factorial of 5
+type: token_iden int_type: 0 value: result
+type: token_assign int_type: 12 value: =
+type: token_iden int_type: 0 value: factorial
+type: token_rparen int_type: 28 value: (
+type: token_int_literal int_type: 8 value: 5
+type: token_lparen int_type: 27 value: )
+type: token_semi int_type: 24 value: ;
+type: token_comment int_type: 33 value: # Print the result
+type: token_iden int_type: 0 value: print
+type: token_rparen int_type: 28 value: (
+type: token_iden int_type: 0 value: result
+type: token_lparen int_type: 27 value: )
+type: token_semi int_type: 24 value: ;
+type: token_lbrace int_type: 29 value: }
+type: token_eof int_type: 35 value:
