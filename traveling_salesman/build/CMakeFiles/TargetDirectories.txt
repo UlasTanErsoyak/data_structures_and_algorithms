@@ -1,3 +1,0 @@
-/home/savannaretro/Desktop/graph_algorithm/build/CMakeFiles/graph_algorithm.dir
-/home/savannaretro/Desktop/graph_algorithm/build/CMakeFiles/edit_cache.dir
-/home/savannaretro/Desktop/graph_algorithm/build/CMakeFiles/rebuild_cache.dir

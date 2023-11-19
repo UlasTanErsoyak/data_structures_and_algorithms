@@ -1,1 +1,0 @@
-/usr/bin/c89-gcc -g CMakeFiles/graph_algorithm.dir/source/input.c.o CMakeFiles/graph_algorithm.dir/source/algorithms.c.o CMakeFiles/graph_algorithm.dir/source/main.c.o -o graph_algorithm 
